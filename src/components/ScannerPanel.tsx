@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Loader2, CheckCircle2, AlertTriangle, XCircle, ExternalLink, Shield, BarChart3, Globe, TrendingUp } from 'lucide-react';
+import { Search, Loader2, CheckCircle2, AlertTriangle, XCircle, ExternalLink, Shield, BarChart3, Globe, TrendingUp, Zap } from 'lucide-react';
+
 
 
 export const ScannerPanel = ({ onScanComplete }: { onScanComplete: () => void }) => {
@@ -8,12 +9,26 @@ export const ScannerPanel = ({ onScanComplete }: { onScanComplete: () => void })
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState<any>(null);
     const [logs, setLogs] = useState<string[]>([]);
+    const [shareLoading, setShareLoading] = useState(false);
 
     const addLog = (msg: string) => {
         setLogs(prev => [...prev.slice(-5), `> ${msg}`]);
     };
 
+    const copyBriefingLink = () => {
+        if (!result) return;
+        setShareLoading(true);
+        const baseUrl = window.location.origin;
+        const payload = btoa(JSON.stringify(result));
+        const shareLink = `${baseUrl}/briefing?payload=${encodeURIComponent(payload)}`;
+
+        navigator.clipboard.writeText(shareLink);
+        setTimeout(() => setShareLoading(false), 2000);
+        alert("Lote de Inteligencia copiado al portapapeles. Listo para entrega Ghost.");
+    };
+
     const handleScan = async () => {
+
         if (!url) return;
         setLoading(true);
         setResult(null);
@@ -179,13 +194,24 @@ export const ScannerPanel = ({ onScanComplete }: { onScanComplete: () => void })
                                         {result.url}
                                     </h4>
                                 </div>
-                                <button
-                                    onClick={() => window.open('/report', '_blank')}
-                                    className="btn-ghost"
-                                    style={{ padding: '6px 12px', fontSize: '0.7rem', display: 'flex', alignItems: 'center', gap: '6px' }}
-                                >
-                                    <ExternalLink size={12} /> Export Intelligence
-                                </button>
+                                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                                    <button
+                                        onClick={() => window.open('/report', '_blank')}
+                                        className="btn-ghost"
+                                        style={{ padding: '6px 12px', fontSize: '0.7rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                                    >
+                                        <ExternalLink size={12} /> Full Report
+                                    </button>
+                                    <button
+                                        onClick={copyBriefingLink}
+                                        className="btn-primary"
+                                        style={{ padding: '6px 12px', fontSize: '0.7rem', display: 'flex', alignItems: 'center', gap: '6px', background: shareLoading ? 'var(--signal-green)' : 'var(--signal-blue)' }}
+                                    >
+                                        {shareLoading ? <CheckCircle2 size={12} /> : <Zap size={12} />}
+                                        {shareLoading ? 'Copied!' : 'Ghost Share'}
+                                    </button>
+                                </div>
+
                             </div>
 
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }}>
