@@ -1,0 +1,266 @@
+{
+  "decisions": [
+    {
+      "id": "dec_upgrade_pricing",
+      "name": "Optimizar Pricing Tier Pro",
+      "description": "Determinar si aumentar el precio del plan Pro reduce la conversión significativamente.",
+      "category": "pricing",
+      "status": "a_ciegas",
+      "requiredSignalIds": [
+        "sig_intent_pricing",
+        "sig_friction_checkout"
+      ],
+      "affectedFlowIds": [
+        "flow_monetization"
+      ],
+      "lastUpdated": "2026-01-30T21:51:04.739Z"
+    },
+    {
+      "id": "dec_fix_onboarding",
+      "name": "Rediseñar Wizard de Setup",
+      "description": "La caída en el paso 2 del wizard sugiere problemas de usabilidad.",
+      "category": "activación",
+      "status": "a_ciegas",
+      "requiredSignalIds": [
+        "sig_activation_setup"
+      ],
+      "affectedFlowIds": [
+        "flow_onboarding"
+      ],
+      "lastUpdated": "2026-01-30T21:51:04.739Z"
+    },
+    {
+      "id": "dec_retention_campaign",
+      "name": "Lanzar Campaña de Reactivación",
+      "description": "Decidir si intervenir usuarios sin login con email agresivo.",
+      "category": "retención",
+      "status": "a_ciegas",
+      "requiredSignalIds": [
+        "sig_churn_risk"
+      ],
+      "affectedFlowIds": [
+        "flow_acquisition"
+      ],
+      "lastUpdated": "2026-01-30T21:51:04.739Z"
+    },
+    {
+      "id": "dec_initial_audit",
+      "name": "Escalar Campañas de Paid Media",
+      "description": "¿Estamos listos para invertir 10x?",
+      "category": "escalado",
+      "status": "a_ciegas",
+      "requiredSignalIds": [
+        "sig_tech_tracking",
+        "sig_cro_ready"
+      ],
+      "affectedFlowIds": [
+        "flow_monetization"
+      ],
+      "lastUpdated": "2026-01-30T22:09:12.613Z"
+    },
+    {
+      "id": "dec_business_pivot",
+      "name": "Pivot de Modelo de Negocio",
+      "description": "Decisión crítica: ¿Es el modelo actual rentable según LTV/CAC?",
+      "category": "pricing",
+      "status": "a_ciegas",
+      "requiredSignalIds": [
+        "sig_profitability_index"
+      ],
+      "affectedFlowIds": [
+        "flow_monetization"
+      ],
+      "lastUpdated": "2026-01-30T22:09:12.613Z"
+    },
+    {
+      "id": "dec_funnel_optimization",
+      "name": "Simplificación de Funnel",
+      "description": "Optimizar el camino de compra eliminando fricción innecesaria.",
+      "category": "conversión",
+      "status": "a_ciegas",
+      "requiredSignalIds": [
+        "sig_checkout_friction",
+        "sig_system_health"
+      ],
+      "affectedFlowIds": [
+        "flow_acquisition"
+      ],
+      "lastUpdated": "2026-01-30T22:09:12.613Z"
+    }
+  ],
+  "signals": [
+    {
+      "id": "sig_intent_pricing",
+      "name": "High Intent (Pricing)",
+      "type": "intención",
+      "description": "User visited pricing > 2 times + clicked CTA within 7 days",
+      "rules": [
+        {
+          "event": "view_pricing",
+          "condition": ">",
+          "value": 2
+        },
+        {
+          "event": "click_cta_signup",
+          "condition": ">",
+          "value": 0
+        }
+      ],
+      "currentStatus": "ausente"
+    },
+    {
+      "id": "sig_friction_checkout",
+      "name": "Friction (Checkout)",
+      "type": "fricción",
+      "description": "Page load time > 3s or Error Rate > 5% on checkout",
+      "rules": [
+        {
+          "event": "checkout_load_time",
+          "condition": ">",
+          "value": 3000
+        }
+      ],
+      "currentStatus": "ausente"
+    },
+    {
+      "id": "sig_activation_setup",
+      "name": "Workspace Setup Complete",
+      "type": "activación",
+      "description": "User completed the initial wizard",
+      "rules": [
+        {
+          "event": "wizard_complete",
+          "condition": "=",
+          "value": 1
+        }
+      ],
+      "currentStatus": "ausente"
+    },
+    {
+      "id": "sig_churn_risk",
+      "name": "Churn Risk (No Login)",
+      "type": "abandono",
+      "description": "No login in 14 days",
+      "rules": [
+        {
+          "event": "login",
+          "condition": "=",
+          "value": 0
+        }
+      ],
+      "currentStatus": "ausente"
+    },
+    {
+      "id": "sig_tech_tracking",
+      "name": "Rastreo de Datos (Pixel + GA4)",
+      "type": "activación",
+      "description": "Verifica si el cliente tiene capacidad de medir conversiones.",
+      "rules": [
+        {
+          "event": "tech_ga4_detected",
+          "condition": ">",
+          "value": 0
+        },
+        {
+          "event": "tech_pixel_detected",
+          "condition": ">",
+          "value": 0
+        }
+      ],
+      "currentStatus": "ausente"
+    },
+    {
+      "id": "sig_cro_ready",
+      "name": "Capacidad de Conversión (Leads)",
+      "type": "valor",
+      "description": "Detecta si la web tiene puntos de contacto activos.",
+      "rules": [
+        {
+          "event": "conversion_point_detected",
+          "condition": ">",
+          "value": 0
+        }
+      ],
+      "currentStatus": "ausente"
+    },
+    {
+      "id": "sig_social_readiness",
+      "name": "Madurez en Redes Sociales",
+      "type": "activación",
+      "description": "Presencia en plataformas + Optimización de Meta-tags.",
+      "rules": [
+        {
+          "event": "social_presence_detected",
+          "condition": ">",
+          "value": 0
+        },
+        {
+          "event": "social_og_detected",
+          "condition": ">",
+          "value": 0
+        }
+      ],
+      "currentStatus": "ausente"
+    },
+    {
+      "id": "sig_profitability_index",
+      "name": "Ley de Rentabilidad (LTV/CAC)",
+      "type": "valor",
+      "description": "Relación entre el valor de vida del cliente y el coste de adquisición.",
+      "rules": [
+        {
+          "event": "ltv_cac_ratio",
+          "condition": ">",
+          "value": 3
+        }
+      ],
+      "currentStatus": "ausente"
+    },
+    {
+      "id": "sig_checkout_friction",
+      "name": "Ley de Fricción (Checkouts)",
+      "type": "fricción",
+      "description": "Nivel de dificultad para que el usuario complete una acción.",
+      "rules": [
+        {
+          "event": "form_friction_score",
+          "condition": "<",
+          "value": 5
+        }
+      ],
+      "currentStatus": "ausente"
+    },
+    {
+      "id": "sig_system_health",
+      "name": "Ley de Velocidad (TTFB)",
+      "type": "valor",
+      "description": "Salud técnica del servidor y latencia de respuesta.",
+      "rules": [
+        {
+          "event": "server_latency_ms",
+          "condition": "<",
+          "value": 200
+        }
+      ],
+      "currentStatus": "ausente"
+    }
+  ],
+  "flows": [
+    {
+      "id": "flow_acquisition",
+      "name": "SaaS Signup Flow",
+      "objective": "captar"
+    },
+    {
+      "id": "flow_monetization",
+      "name": "Pro Plan Upgrade",
+      "objective": "convertir"
+    },
+    {
+      "id": "flow_onboarding",
+      "name": "New User Onboarding",
+      "objective": "convertir"
+    }
+  ],
+  "events": []
+}
