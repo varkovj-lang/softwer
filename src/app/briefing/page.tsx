@@ -30,7 +30,8 @@ function BriefingContent() {
         );
     }
 
-    const { url, score, insights, brandDNA, tags, duration } = data;
+    const { url, score, insights, brandDNA, tags, duration, aiNarrative } = data;
+
 
     return (
         <div className="briefing-container">
@@ -140,9 +141,31 @@ function BriefingContent() {
                                     </div>
                                 </div>
 
-                                {/* Column 2: Predictive Insights */}
+                                {/* Column 2: Predictive Insights & AI Summary */}
                                 <div className="col" style={{ gridColumn: 'span 2' }}>
-                                    <div className="section-card" style={{ height: '100%', border: '1px solid var(--signal-blue-glow)' }}>
+                                    {/* AI SUMMARY SECTION */}
+                                    {aiNarrative && (
+                                        <div className="section-card" style={{ marginBottom: '32px', borderLeft: '3px solid var(--signal-blue)', background: 'rgba(0,122,255,0.02)' }}>
+                                            <div className="varko-label" style={{ marginBottom: '20px', fontSize: '0.65rem', opacity: 0.6, letterSpacing: '0.2em' }}>
+                                                VARKO_INTELLIGENCE_AGENCY // ANALYSIS_SUMMARY
+                                            </div>
+                                            <h3 className="varko-title" style={{ fontSize: '1.6rem', marginBottom: '20px', background: 'linear-gradient(90deg, #fff 0%, #666 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                                                {aiNarrative.headline}
+                                            </h3>
+                                            <p style={{ fontSize: '1rem', color: 'var(--text-primary)', lineHeight: '1.7', marginBottom: '24px', fontStyle: 'italic' }}>
+                                                "{aiNarrative.summary}"
+                                            </p>
+                                            <div style={{ background: 'rgba(255,255,255,0.02)', padding: '20px', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                                                <span className="varko-label" style={{ fontSize: '0.6rem', color: 'var(--signal-blue)', marginBottom: '8px', display: 'block' }}>RECOMENDACIÓN TÁCTICA:</span>
+                                                <span className="varko-mono" style={{ fontSize: '0.9rem', color: 'var(--signal-green)', fontWeight: 600 }}>
+                                                    {aiNarrative.strategicRecommendation}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    <div className="section-card" style={{ height: 'auto', border: '1px solid var(--signal-blue-glow)' }}>
+
                                         <div className="varko-label" style={{ marginBottom: '32px', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--signal-blue)' }}>
                                             <TrendingUp size={14} /> Proyección de Crecimiento (Varko Predict)
                                         </div>

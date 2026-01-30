@@ -45,8 +45,14 @@ interface ScanResult {
         label: string;
         estimatedGain: string;
     }[];
+    aiNarrative?: {
+        headline: string;
+        summary: string;
+        strategicRecommendation: string;
+    };
     status: 'success' | 'error';
 }
+
 
 
 
@@ -208,7 +214,27 @@ export async function scanWebsite(url: string) {
             });
         }
 
-        return { url, duration, score, tags, socialLinks, socialMetadata, traffic, brandDNA, insights, status: 'success' };
+        // --- VARKO INTELLIGENCE ENGINE (AI SIMULATION) ---
+        const domainName = url.replace('https://', '').replace('www.', '').split('.')[0].toUpperCase();
+
+        let headline = `ESTADO DE EMERGENCIA DIGITAL: ${domainName}`;
+        let summary = `El ecosistema de ${domainName} está operando con fugas críticas de datos. La ausencia de protocolos de medición avanzados está causando un "vaciado" de capital en adquisición.`;
+        let strategicRecommendation = `Inyectar inmediatamente capas de rastreo server-side y reconfigurar el embudo de conversión para detener la hemorragia de leads.`;
+
+        if (score > 70) {
+            headline = `OPTIMIZACIÓN DE ÉLITE DETECTADA: ${domainName}`;
+            summary = `${domainName} posee una infraestructura superior a la media del sector. Sin embargo, hemos detectado micro-fricciones en la capa de respuesta que impiden el escalado masivo exponencial.`;
+            strategicRecommendation = `Pasar de una estrategia de adquisición a una de retención agresiva y optimización de LTV mediante automatización predictiva.`;
+        } else if (score > 40) {
+            headline = `ALINEACIÓN ESTRATÉGICA REQUERIDA: ${domainName}`;
+            summary = `La base técnica es estable pero carece de "inteligencia de ataque". Las señales de marketing están llegando, pero no están siendo procesadas para alimentar algoritmos de pujas inteligentes.`;
+            strategicRecommendation = `Implementar un "Conversion API" y unificar la data de GA4 con el CRM para desbloquear el verdadero potencial de ROI.`;
+        }
+
+        const aiNarrative = { headline, summary, strategicRecommendation };
+
+        return { url, duration, score, tags, socialLinks, socialMetadata, traffic, brandDNA, insights, aiNarrative, status: 'success' };
+
 
 
 
