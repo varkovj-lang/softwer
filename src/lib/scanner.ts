@@ -79,17 +79,23 @@ export async function scanWebsite(url: string) {
         const duration = endTime - startTime;
 
         // --- LOGICA DE DETECCION AVANZADA (MARTECH) ---
+        // Technical Signatures (Expanded)
         const tags = {
-            hasGA4: html.includes('googletagmanager.com/gtag/js') || html.includes('G-') || html.includes('analytics.js') || html.includes('googletagmanager.com/gtm.js'),
-            hasFBPixel: html.includes('fbevents.js') || html.includes('fbq(') || html.includes('connect.facebook.net'),
-            hasGAds: html.includes('googleadservices.com') || html.includes('AW-') || html.includes('googletagmanager.com/gtm.js?id=AW'),
-            hasKlaviyo: html.includes('klaviyo.com') || html.includes('_learnq'),
-            hasMailchimp: html.includes('chimpstatic.com') || html.includes('mc-validate'),
-            hasHotjar: html.includes('static.hotjar.com') || html.includes('_hjSettings'),
-            hasConversionForm: htmlLower.includes('<form') || htmlLower.includes('type="submit"') || htmlLower.includes('action="/contact"'),
-            hasOpenGraph: html.includes('property="og:'),
+            hasFBPixel: html.includes('fbevents.js') || html.includes('connect.facebook.net'),
+            hasGA4: html.includes('googletagmanager.com/gtag/js') || html.includes('ga(\'create\''),
+            hasGTM: html.includes('googletagmanager.com/gtm.js'),
+            hasGAds: html.includes('googleadservices.com/pagead/conversion.js') || html.includes('ads.google.com'),
+            hasTikTok: html.includes('analytics.tiktok.com'),
+            hasLinkedIn: html.includes('snap.licdn.com') || html.includes('linkedin.com/insight'),
+            hasPinterest: html.includes('pinterest.com/js/pinit.js'),
+            hasSegment: html.includes('cdn.segment.com'),
+            hasHotjar: html.includes('static.hotjar.com'),
+            hasKlaviyo: html.includes('static.klaviyo.com'),
+            hasMailchimp: html.includes('chimpstatic.com'),
+            hasConversionForm: htmlLower.includes('<form') && (htmlLower.includes('type="email"') || htmlLower.includes('type="submit"') || htmlLower.includes('input')),
+            hasOpenGraph: htmlLower.includes('og:title') || htmlLower.includes('og:image'),
+            hasPrivacyPolicy: htmlLower.includes('privacy-policy') || htmlLower.includes('politica-de-privacidad') || htmlLower.includes('terms'),
             isSecure: url.startsWith('https'),
-            hasPrivacyPolicy: htmlLower.includes('politica de privacidad') || htmlLower.includes('privacy policy') || htmlLower.includes('/privacy') || htmlLower.includes('legal-notice'),
             formFieldsCount: (htmlLower.match(/<input/g) || []).length, // Estimación de campos
             ttfb: Math.random() * 500 // Simulación de Time to First Byte
         };
@@ -217,18 +223,18 @@ export async function scanWebsite(url: string) {
         // --- VARKO INTELLIGENCE ENGINE (AI SIMULATION) ---
         const domainName = url.replace('https://', '').replace('www.', '').split('.')[0].toUpperCase();
 
-        let headline = `ESTADO DE EMERGENCIA DIGITAL: ${domainName}`;
-        let summary = `El ecosistema de ${domainName} está operando con fugas críticas de datos. La ausencia de protocolos de medición avanzados está causando un "vaciado" de capital en adquisición.`;
-        let strategicRecommendation = `Inyectar inmediatamente capas de rastreo server-side y reconfigurar el embudo de conversión para detener la hemorragia de leads.`;
+        let headline = `INTERRUPCIÓN DE LEY DE SEÑAL: ${domainName}`;
+        let summary = `El activo digital muestra una fragmentación crítica en la arquitectura de datos. La "Ley de Señal" ha sido violada, lo que imposibilita cualquier escalado eficiente de inversión en este momento.`;
+        let strategicRecommendation = `Cesar inmediatamente la pauta de prospección y ejecutar una reconexión total de protocolos de seguimiento (CAPI + GA4 Server-Side).`;
 
         if (score > 70) {
-            headline = `OPTIMIZACIÓN DE ÉLITE DETECTADA: ${domainName}`;
-            summary = `${domainName} posee una infraestructura superior a la media del sector. Sin embargo, hemos detectado micro-fricciones en la capa de respuesta que impiden el escalado masivo exponencial.`;
-            strategicRecommendation = `Pasar de una estrategia de adquisición a una de retención agresiva y optimización de LTV mediante automatización predictiva.`;
+            headline = `EFICIENCIA TÉCNICA DE ÉLITE: ${domainName}`;
+            summary = `${domainName} cumple con la "Ley de Arquitectura de Confianza" y presenta una fricción mínima. Sin embargo, la ventaja competitiva se está diluyendo por falta de una "Estrategia de Retención" activa.`;
+            strategicRecommendation = `Inyectar capital en una infraestructura de Lifecycle Marketing para capitalizar el tráfico de alta calidad que ya posee la marca.`;
         } else if (score > 40) {
-            headline = `ALINEACIÓN ESTRATÉGICA REQUERIDA: ${domainName}`;
-            summary = `La base técnica es estable pero carece de "inteligencia de ataque". Las señales de marketing están llegando, pero no están siendo procesadas para alimentar algoritmos de pujas inteligentes.`;
-            strategicRecommendation = `Implementar un "Conversion API" y unificar la data de GA4 con el CRM para desbloquear el verdadero potencial de ROI.`;
+            headline = `ALINEACIÓN DE LEYES REQUERIDA: ${domainName}`;
+            summary = `Se observa una base operativa estable, pero con una violación latente de la "Ley de Fricción". El flujo de conversión posee nodos de resistencia que están "quemando" el presupuesto de adquisición.`;
+            strategicRecommendation = `Desplegar protocolos de "Fricción Negativa" simplificando el checkout y optimizando la velocidad de respuesta técnica (LCP).`;
         }
 
         const aiNarrative = { headline, summary, strategicRecommendation };

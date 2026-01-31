@@ -130,10 +130,10 @@ export const ComparisonPanel = () => {
 const RadarChart = ({ client, competitor }: { client: any, competitor: any }) => {
     const normalize = (data: any) => {
         const velocity = Math.max(20, 100 - (data.duration / 50));
-        const conversion = data.tags.hasConversionForm ? 100 : 30;
-        const measurement = (data.tags.hasGA4 ? 50 : 0) + (data.tags.hasFBPixel ? 50 : 0);
-        const authority = data.traffic?.authority || 20;
-        return [measurement, conversion, velocity, authority];
+        const friction = data.tags.hasConversionForm ? 100 : 30;
+        const signal = (data.tags.hasGA4 || data.tags.hasGTM ? 50 : 0) + (data.tags.hasFBPixel ? 50 : 0);
+        const trust = (data.tags.isSecure ? 50 : 0) + (data.tags.hasPrivacyPolicy ? 50 : 0);
+        return [signal, friction, velocity, trust];
     };
 
     const cData = normalize(client);
@@ -151,7 +151,8 @@ const RadarChart = ({ client, competitor }: { client: any, competitor: any }) =>
         }).join(' ');
     };
 
-    const labels = ['MEASURE', 'CONV', 'VELOCITY', 'AUTH'];
+    const labels = ['SIGNAL', 'FRICTION', 'VELOCITY', 'TRUST'];
+
 
     return (
         <div style={{ position: 'relative', width: size, height: size }}>

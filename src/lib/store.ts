@@ -24,59 +24,53 @@ function initDB() {
         const initialSignals: Signal[] = [
             ...defaultSignals.map(s => ({ ...s, currentStatus: 'ausente' as const })),
             {
-                id: 'sig_tech_tracking',
-                name: 'Rastreo de Datos (Pixel + GA4)',
+                id: 'sig_signal_integrity',
+                name: 'Ley de Integridad de Señal (Pixel + GTM)',
                 type: 'activación',
-                description: 'Verifica si el cliente tiene capacidad de medir conversiones.',
+                description: 'Verificación de la capa de inteligencia de datos necesaria para el aprendizaje algorítmico.',
                 rules: [
-                    { event: 'tech_ga4_detected', condition: '>', value: 0 },
+                    { event: 'tech_gtm_detected', condition: '>', value: 0 },
                     { event: 'tech_pixel_detected', condition: '>', value: 0 }
                 ],
                 currentStatus: 'ausente'
             },
             {
-                id: 'sig_cro_ready',
-                name: 'Capacidad de Conversión (Leads)',
-                type: 'valor',
-                description: 'Detecta si la web tiene puntos de contacto activos.',
+                id: 'sig_conversion_friction',
+                name: 'Ley de Fricción Negativa (CRO)',
+                type: 'fricción',
+                description: 'Nivel de resistencia del usuario antes de completar una acción de valor (Lead/Sale).',
                 rules: [
                     { event: 'conversion_point_detected', condition: '>', value: 0 }
                 ],
                 currentStatus: 'ausente'
             },
             {
-                id: 'sig_social_readiness',
-                name: 'Madurez en Redes Sociales',
-                type: 'activación',
-                description: 'Presencia en plataformas + Optimización de Meta-tags.',
+                id: 'sig_lifecycle_automation',
+                name: 'Ley de Automatización de Ciclo de Vida (CRM)',
+                type: 'valor',
+                description: 'Capacidad del sistema para retener y monetizar la base de datos sin intervención humana.',
                 rules: [
-                    { event: 'social_presence_detected', condition: '>', value: 0 },
-                    { event: 'social_og_detected', condition: '>', value: 0 }
+                    { event: 'retention_tool_detected', condition: '>', value: 0 }
                 ],
                 currentStatus: 'ausente'
             },
             {
-                id: 'sig_profitability_index',
-                name: 'Ley de Rentabilidad (LTV/CAC)',
+                id: 'sig_trust_architecture',
+                name: 'Ley de Arquitectura de Confianza (Compliance)',
                 type: 'valor',
-                description: 'Relación entre el valor de vida del cliente y el coste de adquisición.',
-                rules: [{ event: 'ltv_cac_ratio', condition: '>', value: 3 }], // Ratio ideal > 3
+                description: 'Protocolos de seguridad y cumplimiento legal que eliminan el riesgo de abandono.',
+                rules: [
+                    { event: 'legal_layer_detected', condition: '>', value: 0 },
+                    { event: 'is_secure', condition: '>', value: 0 }
+                ],
                 currentStatus: 'ausente'
             },
             {
-                id: 'sig_checkout_friction',
-                name: 'Ley de Fricción (Checkouts)',
-                type: 'fricción',
-                description: 'Nivel de dificultad para que el usuario complete una acción.',
-                rules: [{ event: 'form_friction_score', condition: '<', value: 5 }], // Menos de 5 campos ideal
-                currentStatus: 'ausente'
-            },
-            {
-                id: 'sig_system_health',
-                name: 'Ley de Velocidad (TTFB)',
+                id: 'sig_infra_velocity',
+                name: 'Ley de Velocidad de Respuesta (LCP)',
                 type: 'valor',
-                description: 'Salud técnica del servidor y latencia de respuesta.',
-                rules: [{ event: 'server_latency_ms', condition: '<', value: 200 }], // Menos de 200ms ideal
+                description: 'Latencia técnica que impacta directamente en la tasa de rebote y el QA de pauta.',
+                rules: [{ event: 'server_latency_ms', condition: '<', value: 300 }],
                 currentStatus: 'ausente'
             }
         ];
@@ -84,36 +78,37 @@ function initDB() {
         const initialDecisions: Decision[] = [
             ...defaultDecisions.map(d => ({ ...d, status: 'a_ciegas' as const })),
             {
-                id: 'dec_initial_audit',
-                name: 'Escalar Campañas de Paid Media',
-                description: '¿Estamos listos para invertir 10x?',
+                id: 'dec_scaling_protocol',
+                name: 'Protocolo de Escalado Vertical',
+                description: 'Aumento agresivo de inversión basado en la integridad de la señal de retorno.',
                 category: 'escalado',
                 status: 'a_ciegas',
-                requiredSignalIds: ['sig_tech_tracking', 'sig_cro_ready'],
+                requiredSignalIds: ['sig_signal_integrity', 'sig_infra_velocity'],
                 affectedFlowIds: ['flow_monetization'],
                 lastUpdated: new Date().toISOString()
             },
             {
-                id: 'dec_business_pivot',
-                name: 'Pivot de Modelo de Negocio',
-                description: 'Decisión crítica: ¿Es el modelo actual rentable según LTV/CAC?',
-                category: 'pricing',
+                id: 'dec_retention_injection',
+                name: 'Inyección de Estrategia de Retención',
+                description: 'Activación de flujos de email/SMS para maximizar el LTV del cliente adquirido.',
+                category: 'retención',
                 status: 'a_ciegas',
-                requiredSignalIds: ['sig_profitability_index'],
+                requiredSignalIds: ['sig_lifecycle_automation'],
                 affectedFlowIds: ['flow_monetization'],
                 lastUpdated: new Date().toISOString()
             },
             {
-                id: 'dec_funnel_optimization',
-                name: 'Simplificación de Funnel',
-                description: 'Optimizar el camino de compra eliminando fricción innecesaria.',
+                id: 'dec_friction_reduction',
+                name: 'Reducción de Fricción del Embudo',
+                description: 'Optimización de formularios y UX para capturar demanda con el menor esfuerzo posible.',
                 category: 'conversión',
                 status: 'a_ciegas',
-                requiredSignalIds: ['sig_checkout_friction', 'sig_system_health'],
+                requiredSignalIds: ['sig_conversion_friction', 'sig_trust_architecture'],
                 affectedFlowIds: ['flow_acquisition'],
                 lastUpdated: new Date().toISOString()
             }
         ];
+
 
         const initialData: DBSchema = {
             decisions: initialDecisions,

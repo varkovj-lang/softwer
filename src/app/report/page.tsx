@@ -104,13 +104,14 @@ export default function ReportPage() {
                 </section>
 
                 <section className="report-section">
-                    <h2 className="varko-label section-header">03. Market Laws Risk Matrix</h2>
+                    <h2 className="varko-label section-header">03. Matrix of Digital Laws (Precise Accuracy)</h2>
                     <div className="laws-matrix">
-                        <LawRow law="Law of Velocity" metric={`${Math.round(lastScan.duration)}ms`} verdict={lastScan.duration < 2000 ? 'OPTIMAL' : 'FAILURE'} />
-                        <LawRow law="Law of Friction" metric={lastScan.tags.hasConversionForm ? 'Present' : 'Absent'} verdict={lastScan.tags.hasConversionForm ? 'LOW' : 'MAXIMUM'} />
-                        <LawRow law="Law of Authority" metric={lastScan.traffic?.rank || '0.1'} verdict={lastScan.score > 70 ? 'STRENGTH' : 'WEAKNESS'} />
+                        <LawRow law="Law of Signal Integrity" metric={lastScan.tags.hasGA4 && lastScan.tags.hasFBPixel ? 'Complete' : 'Fragmented'} verdict={lastScan.tags.hasGA4 && lastScan.tags.hasFBPixel ? 'STRENGTH' : 'LEAKAGE'} />
+                        <LawRow law="Law of Friction" metric={lastScan.tags.hasConversionForm ? 'Negative' : 'Maximum'} verdict={lastScan.tags.hasConversionForm ? 'OPTIMAL' : 'BLOCKAGE'} />
+                        <LawRow law="Law of Trust Architecture" metric={lastScan.tags.isSecure ? 'Verified' : 'Compromised'} verdict={lastScan.tags.isSecure ? 'STRENGTH' : 'CRITICAL'} />
                     </div>
                 </section>
+
 
                 <section className="report-section">
                     <h2 className="varko-label section-header">04. Blind Horizon: Blocked Strategic Units</h2>
