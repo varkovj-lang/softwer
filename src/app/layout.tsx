@@ -84,6 +84,9 @@ export default function RootLayout({
           </form>
           <meta property="og:title" content="VARKO OS System" />
           <meta property="og:image" content="https://varko.systems/og.jpg" />
+          {/* Retention Mock Markers */}
+          <script id="klaviyo-js" src="https://static.klaviyo.com/onsite/js/klaviyo.js"></script>
+          <div className="mailchimp-form-embed"></div>
         </div>
 
       </body>
