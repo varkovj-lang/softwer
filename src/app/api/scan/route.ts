@@ -13,12 +13,34 @@ export async function POST(request: Request) {
             // Persistir el escaneo inmediatamente
             const db = getDB();
             db.lastScan = result;
+
+            // --- MAPEAR RESULTADOS A EVENTOS DEL SISTEMA ---
+            if (result.status === 'success' && result.tags) {
+                const timestamp = Date.now();
+                const scanEvents = [];
+
+                if (result.tags.hasGA4 || result.tags.hasGTM) scanEvents.push({ name: 'tech_gtm_detected', timestamp, value: 1 });
+                if (result.tags.hasFBPixel) scanEvents.push({ name: 'tech_pixel_detected', timestamp, value: 1 });
+                if (result.tags.hasConversionForm) scanEvents.push({ name: 'conversion_point_detected', timestamp, value: 1 });
+                if (result.tags.hasKlaviyo || result.tags.hasMailchimp) scanEvents.push({ name: 'retention_tool_detected', timestamp, value: 1 });
+                if (result.tags.hasPrivacyPolicy) scanEvents.push({ name: 'legal_layer_detected', timestamp, value: 1 });
+                if (result.tags.isSecure) scanEvents.push({ name: 'is_secure', timestamp, value: 1 });
+
+                // Latency event
+                scanEvents.push({ name: 'server_latency_ms', timestamp, value: result.duration });
+
+                // Añadir eventos a la DB
+                db.events = [...db.events, ...scanEvents];
+            }
+
+
             saveDB(db);
 
             // Trigger Engine Re-evaluation
             evaluateSystem(db);
 
             return NextResponse.json({ success: true, result });
+
         }
 
         if (type === 'social') {

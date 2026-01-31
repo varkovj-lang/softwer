@@ -30,8 +30,10 @@ function evaluateSignal(signal: Signal, events: any[]): Signal {
     let status: SignalStatus = 'ausente';
 
     const rulesMet = signal.rules.every(rule => {
-        // Filter events matching the rule event name
-        const matchingEvents = events.filter(e => e.name === rule.event);
+        // Filter events matching the rule event name AND within a recent window (e.g., 10 minutes)
+        const tenMinutesAgo = Date.now() - 10 * 60 * 1000;
+        const matchingEvents = events.filter(e => e.name === rule.event && e.timestamp > tenMinutesAgo);
+
 
         if (matchingEvents.length === 0) return false;
 
