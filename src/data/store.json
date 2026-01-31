@@ -13,7 +13,7 @@
       "affectedFlowIds": [
         "flow_monetization"
       ],
-      "lastUpdated": "2026-01-30T21:51:04.739Z"
+      "lastUpdated": "2026-01-31T02:00:05.073Z"
     },
     {
       "id": "dec_fix_onboarding",
@@ -27,7 +27,7 @@
       "affectedFlowIds": [
         "flow_onboarding"
       ],
-      "lastUpdated": "2026-01-30T21:51:04.739Z"
+      "lastUpdated": "2026-01-31T02:00:05.073Z"
     },
     {
       "id": "dec_retention_campaign",
@@ -41,14 +41,14 @@
       "affectedFlowIds": [
         "flow_acquisition"
       ],
-      "lastUpdated": "2026-01-30T21:51:04.739Z"
+      "lastUpdated": "2026-01-31T02:00:05.073Z"
     },
     {
       "id": "dec_initial_audit",
       "name": "Escalar Campañas de Paid Media",
       "description": "¿Estamos listos para invertir 10x?",
       "category": "escalado",
-      "status": "a_ciegas",
+      "status": "parcial",
       "requiredSignalIds": [
         "sig_tech_tracking",
         "sig_cro_ready"
@@ -56,7 +56,7 @@
       "affectedFlowIds": [
         "flow_monetization"
       ],
-      "lastUpdated": "2026-01-30T22:09:12.613Z"
+      "lastUpdated": "2026-01-31T02:00:05.073Z"
     },
     {
       "id": "dec_business_pivot",
@@ -70,14 +70,14 @@
       "affectedFlowIds": [
         "flow_monetization"
       ],
-      "lastUpdated": "2026-01-30T22:09:12.613Z"
+      "lastUpdated": "2026-01-31T02:00:05.073Z"
     },
     {
       "id": "dec_funnel_optimization",
       "name": "Simplificación de Funnel",
       "description": "Optimizar el camino de compra eliminando fricción innecesaria.",
       "category": "conversión",
-      "status": "a_ciegas",
+      "status": "parcial",
       "requiredSignalIds": [
         "sig_checkout_friction",
         "sig_system_health"
@@ -85,7 +85,7 @@
       "affectedFlowIds": [
         "flow_acquisition"
       ],
-      "lastUpdated": "2026-01-30T22:09:12.613Z"
+      "lastUpdated": "2026-01-31T02:00:05.073Z"
     }
   ],
   "signals": [
@@ -181,7 +181,7 @@
           "value": 0
         }
       ],
-      "currentStatus": "ausente"
+      "currentStatus": "presente"
     },
     {
       "id": "sig_social_readiness",
@@ -228,7 +228,7 @@
           "value": 5
         }
       ],
-      "currentStatus": "ausente"
+      "currentStatus": "presente"
     },
     {
       "id": "sig_system_health",
@@ -262,5 +262,102 @@
       "objective": "convertir"
     }
   ],
-  "events": []
+  "events": [
+    {
+      "name": "audit_score_generated",
+      "timestamp": 1769824805054,
+      "value": 85
+    },
+    {
+      "name": "tech_ga4_detected",
+      "timestamp": 1769824805054,
+      "value": 1
+    },
+    {
+      "name": "conversion_point_detected",
+      "timestamp": 1769824805054,
+      "value": 1
+    },
+    {
+      "name": "social_og_detected",
+      "timestamp": 1769824805054,
+      "value": 1
+    },
+    {
+      "name": "form_friction_score",
+      "timestamp": 1769824805054,
+      "value": 8
+    },
+    {
+      "name": "server_latency_ms",
+      "timestamp": 1769824805054,
+      "value": 420.55903545974417
+    },
+    {
+      "name": "ltv_cac_ratio",
+      "timestamp": 1769824805054,
+      "value": 2.0506201608516585
+    }
+  ],
+  "lastScan": {
+    "url": "https://www.amazon.com/",
+    "duration": 748,
+    "score": 85,
+    "tags": {
+      "hasGA4": true,
+      "hasFBPixel": false,
+      "hasGAds": false,
+      "hasKlaviyo": false,
+      "hasMailchimp": false,
+      "hasHotjar": false,
+      "hasConversionForm": true,
+      "hasOpenGraph": true,
+      "isSecure": true,
+      "hasPrivacyPolicy": true,
+      "formFieldsCount": 8,
+      "ttfb": 420.55903545974417
+    },
+    "socialLinks": {},
+    "socialMetadata": {
+      "description": "Free shipping on millions of items. Get the best of Shopping and Entertainment with Prime. Enjoy low prices and great deals on the largest selection of everyday essentials and other products, including fashion, home, beauty, electronics, Alexa Devices, sporting goods, toys, automotive, pets, baby, books, video games, musical instruments, office supplies, and more."
+    },
+    "traffic": {
+      "estimate": "+500k visitas/mes",
+      "rank": "#45k Global",
+      "authority": 50
+    },
+    "brandDNA": {
+      "colors": [
+        "#000000",
+        "#2563EB",
+        "#F4F4F5"
+      ],
+      "fonts": [
+        "System Sans-Serif"
+      ],
+      "theme": "dark"
+    },
+    "insights": [
+      {
+        "category": "Measurement",
+        "impact": "High",
+        "complexity": "Low",
+        "label": "Signal Reconnection",
+        "estimatedGain": "+22% Attribution"
+      },
+      {
+        "category": "Retention",
+        "impact": "High",
+        "complexity": "Medium",
+        "label": "Email Lifecycle",
+        "estimatedGain": "+18% LTV"
+      }
+    ],
+    "aiNarrative": {
+      "headline": "OPTIMIZACIÓN DE ÉLITE DETECTADA: AMAZON",
+      "summary": "AMAZON posee una infraestructura superior a la media del sector. Sin embargo, hemos detectado micro-fricciones en la capa de respuesta que impiden el escalado masivo exponencial.",
+      "strategicRecommendation": "Pasar de una estrategia de adquisición a una de retención agresiva y optimización de LTV mediante automatización predictiva."
+    },
+    "status": "success"
+  }
 }

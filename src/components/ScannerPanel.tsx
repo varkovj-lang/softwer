@@ -118,8 +118,8 @@ export const ScannerPanel = ({ onScanComplete }: { onScanComplete: () => void })
                 <div style={{ flex: 1, minWidth: '300px' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         <label className="varko-label">Domain Infrastructure</label>
-                        <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                            <div style={{ position: 'relative', flex: 1 }}>
+                        <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                            <div style={{ position: 'relative', flex: '1 1 300px' }}>
                                 <Globe size={16} style={{ position: 'absolute', left: '12px', top: '21px', transform: 'translateY(-50%)', color: 'var(--text-tertiary)' }} />
                                 <input
                                     type="text"
@@ -163,7 +163,7 @@ export const ScannerPanel = ({ onScanComplete }: { onScanComplete: () => void })
                                 className="btn-primary"
                                 style={{
                                     display: 'flex', alignItems: 'center', gap: '8px',
-                                    minWidth: '160px', justifyContent: 'center',
+                                    flex: '1 1 160px', justifyContent: 'center',
                                     height: '46px',
                                     backgroundColor: loading ? 'var(--bg-surface-elevated)' : undefined,
                                     border: loading ? '1px solid var(--border-medium)' : 'none',
@@ -173,6 +173,7 @@ export const ScannerPanel = ({ onScanComplete }: { onScanComplete: () => void })
                                 {loading ? 'Auditing...' : 'Start Audit'}
                             </button>
                         </div>
+
                     </div>
                 </div>
 
@@ -183,18 +184,19 @@ export const ScannerPanel = ({ onScanComplete }: { onScanComplete: () => void })
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             style={{
-                                flex: 1.5, minWidth: '400px', background: 'rgba(255,255,255,0.02)',
-                                padding: '24px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)'
+                                flex: 1.5, minWidth: '0', background: 'rgba(255,255,255,0.02)',
+                                padding: '24px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)',
+                                width: '100%'
                             }}
                         >
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '24px', alignItems: 'center' }}>
+                            <div className="varko-flex-res" style={{ marginBottom: '24px' }}>
                                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                                     <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--signal-green)' }} />
-                                    <h4 className="varko-mono" style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                                    <h4 className="varko-mono" style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', wordBreak: 'break-all' }}>
                                         {result.url}
                                     </h4>
                                 </div>
-                                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                                <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginTop: '16px' }}>
                                     <button
                                         onClick={() => window.open('/report', '_blank')}
                                         className="btn-ghost"
@@ -211,10 +213,10 @@ export const ScannerPanel = ({ onScanComplete }: { onScanComplete: () => void })
                                         {shareLoading ? 'Copied!' : 'Ghost Share'}
                                     </button>
                                 </div>
-
                             </div>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }}>
+                            <div className="scanner-results-grid">
+
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                                     <div>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>

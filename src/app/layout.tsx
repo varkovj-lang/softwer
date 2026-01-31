@@ -4,10 +4,13 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "VARKO / OPERATING SYSTEM",
   description: "High-fidelity strategic control layer for digital business intelligence.",
+  manifest: "/manifest.json",
   icons: {
     icon: "/favicon.ico",
+    apple: "/varko-icon.png",
   }
 };
+
 
 export const viewport: Viewport = {
   themeColor: "#000000",

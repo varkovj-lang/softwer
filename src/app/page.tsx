@@ -102,10 +102,12 @@ export default function Home() {
   return (
     <main className="container animate-fade">
       <header style={{ marginBottom: '80px' }}>
-        <div style={{
-          display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end',
-          marginBottom: '64px', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '32px'
-        }}>
+        <div
+          className="varko-flex-res"
+          style={{
+            marginBottom: '64px', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '32px'
+          }}
+        >
           <div>
             <span className="varko-label" style={{ color: 'var(--signal-blue)', marginBottom: '12px', display: 'block' }}>
               Operational System
@@ -118,7 +120,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div style={{ display: 'flex', gap: '12px' }}>
+          <div style={{ display: 'flex', gap: '12px', width: '100%', maxWidth: '350px', justifyContent: 'flex-end' }} className="mobile-full-width">
             <button
               onClick={async () => {
                 if (confirm('¿Restablecer el Kernel del sistema?')) {
@@ -127,14 +129,14 @@ export default function Home() {
                 }
               }}
               className="btn-ghost"
-              style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--signal-red)', borderColor: 'rgba(255, 59, 48, 0.2)' }}
+              style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--signal-red)', borderColor: 'rgba(255, 59, 48, 0.2)', flex: 1, justifyContent: 'center' }}
             >
               <RotateCcw size={14} /> Reset
             </button>
             <button
               onClick={() => setShowModal(true)}
               className="btn-primary"
-              style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+              style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, justifyContent: 'center' }}
             >
               <Plus size={16} /> New Decision
             </button>
@@ -150,7 +152,8 @@ export default function Home() {
         </div>
 
         {/* Dynamic Stats Grid */}
-        <div className="varko-grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
+        <div className="varko-grid" style={{ '--grid-cols': 4 } as any}>
+
           {(() => {
             const integrity = Math.round(((stats.clear + stats.partial * 0.5) / (stats.total || 1)) * 100);
             return (

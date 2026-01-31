@@ -39,9 +39,10 @@ export const ComparisonPanel = () => {
                 </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr 1fr', gap: '32px', alignItems: 'center' }}>
+            <div className="comparison-grid">
                 {/* Column Client */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+
                     <span className="varko-label" style={{ color: 'var(--signal-blue)' }}>Subject Alpha (Client)</span>
                     <div style={{ display: 'flex', gap: '8px' }}>
                         <input

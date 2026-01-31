@@ -246,7 +246,7 @@ function BriefingContent() {
                     position: relative;
                 }
                 .side-info {
-                    width: 280px;
+                    width: 250px;
                     border-right: 1px solid rgba(255,255,255,0.05);
                     padding: 40px;
                     display: flex;
@@ -257,7 +257,23 @@ function BriefingContent() {
                     flex: 1;
                     padding: 80px 100px;
                     max-width: 1400px;
+                    width: 100%;
                 }
+                @media (max-width: 1200px) {
+                    .report-content { padding: 60px 40px; }
+                }
+                @media (max-width: 1024px) {
+                    .main-report { display: block; }
+                    .side-info { width: 100%; height: auto; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 20px 40px; }
+                    .grid-sections { grid-template-columns: 1fr; }
+                    .col { grid-column: span 1 !important; }
+                }
+                @media (max-width: 640px) {
+                    .report-content { padding: 40px 20px; }
+                    .varko-title { font-size: 2.5rem !important; }
+                    header { flex-direction: column; gap: 40px; align-items: flex-start !important; }
+                }
+
                 .score-circle {
                     width: 120px;
                     height: 120px;
