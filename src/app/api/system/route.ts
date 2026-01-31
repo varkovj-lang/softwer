@@ -3,7 +3,8 @@ import { getDB } from '@/lib/store';
 import { DecisionWithSignals, DecisionStatus } from '@/types';
 
 export async function GET() {
-    const db = getDB();
+    const db = await getDB();
+
 
     // Enrich for frontend
     const enrichedDecisions: DecisionWithSignals[] = db.decisions.map(d => {

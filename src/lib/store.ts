@@ -1,16 +1,14 @@
-import fs from 'fs';
-import path from 'path';
+import { db } from './firebase';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { Decision, Signal, Flow } from '../types';
 import { decisions as defaultDecisions, signals as defaultSignals, flows as defaultFlows } from '../data/mock';
-
-const DB_PATH = path.join(process.cwd(), 'src', 'data', 'store.json');
 
 export interface DBSchema {
     decisions: Decision[];
     signals: Signal[];
     flows: Flow[];
     events: RecordedEvent[];
-    lastScan?: any; // Guardamos el último resultado para el reporte
+    lastScan?: any;
 }
 
 export interface RecordedEvent {
@@ -19,26 +17,50 @@ export interface RecordedEvent {
     value?: number;
 }
 
-// MEMORY STORE FALLBACK FOR SERVERLESS (VERCEL)
-let memoryDB: DBSchema | null = null;
+const SYSTEM_DOC_ID = 'varko_core_state';
 
-function initDB() {
-    if (memoryDB) return;
+export async function getDB(): Promise<DBSchema> {
+    try {
+        const docRef = doc(db, 'system', SYSTEM_DOC_ID);
+        const docSnap = await getDoc(docRef);
 
-    let initialData: DBSchema;
-
-    if (fs.existsSync(DB_PATH)) {
-        try {
-            const fileData = fs.readFileSync(DB_PATH, 'utf-8');
-            initialData = JSON.parse(fileData);
-            memoryDB = initialData;
-            return;
-        } catch (e) {
-            console.error("Store Read Error:", e);
+        if (docSnap.exists()) {
+            return docSnap.data() as DBSchema;
+        } else {
+            // Initial Seed
+            const initialData = await seedDB();
+            return initialData;
         }
+    } catch (e) {
+        console.error("Error reading from Firebase:", e);
+        // Fallback to local defaults if Firebase fails
+        return {
+            decisions: defaultDecisions as any,
+            signals: defaultSignals as any,
+            flows: defaultFlows,
+            events: []
+        };
     }
+}
 
-    // Default Initialization
+export async function saveDB(data: DBSchema) {
+    try {
+        const docRef = doc(db, 'system', SYSTEM_DOC_ID);
+        await setDoc(docRef, data);
+    } catch (e) {
+        console.error("Error saving to Firebase:", e);
+    }
+}
+
+export async function appendEvent(event: RecordedEvent) {
+    const dbData = await getDB();
+    dbData.events.push(event);
+    if (dbData.events.length > 500) dbData.events = dbData.events.slice(-500);
+    await saveDB(dbData);
+    return dbData;
+}
+
+async function seedDB(): Promise<DBSchema> {
     const initialSignals: Signal[] = [
         ...defaultSignals.map(s => ({ ...s, currentStatus: 'ausente' as const })),
         {
@@ -52,12 +74,11 @@ function initDB() {
             ],
             currentStatus: 'ausente'
         },
-        // ... (resto de señales igual)
         {
             id: 'sig_conversion_friction',
             name: 'Ley de Fricción Negativa (CRO)',
             type: 'fricción',
-            description: 'Nivel de resistencia del usuario antes de completar una acción de valor (Lead/Sale).',
+            description: 'Nivel de resistencia del usuario antes de completar una acción de valor.',
             rules: [{ event: 'conversion_point_detected', condition: '>', value: 0 }],
             currentStatus: 'ausente'
         },
@@ -124,43 +145,13 @@ function initDB() {
         }
     ];
 
-    initialData = {
+    const data = {
         decisions: initialDecisions,
         signals: initialSignals,
         flows: defaultFlows,
         events: []
     };
 
-    memoryDB = initialData;
-
-    // Intenar persistir localmente solo si es posible
-    try {
-        if (!fs.existsSync(path.dirname(DB_PATH))) fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
-        fs.writeFileSync(DB_PATH, JSON.stringify(initialData, null, 2));
-    } catch (e) {
-        // Ignorar falla en Vercel
-    }
+    await saveDB(data);
+    return data;
 }
-
-export function getDB(): DBSchema {
-    initDB();
-    return memoryDB!;
-}
-
-export function saveDB(data: DBSchema) {
-    memoryDB = data;
-    try {
-        fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2));
-    } catch (e) {
-        // Ignorar falla en Vercel
-    }
-}
-
-export function appendEvent(event: RecordedEvent) {
-    const db = getDB();
-    db.events.push(event);
-    if (db.events.length > 500) db.events = db.events.slice(-500);
-    saveDB(db);
-    return db;
-}
-

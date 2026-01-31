@@ -11,7 +11,7 @@ export async function POST(request: Request) {
             const result = await scanWebsite(url);
 
             // Persistir el escaneo inmediatamente
-            const db = getDB();
+            const db = await getDB();
             db.lastScan = result;
 
             // --- MAPEAR RESULTADOS A EVENTOS DEL SISTEMA ---
@@ -34,10 +34,10 @@ export async function POST(request: Request) {
             }
 
 
-            saveDB(db);
+            await saveDB(db);
 
             // Trigger Engine Re-evaluation
-            const updatedDB = evaluateSystem(db);
+            const updatedDB = await evaluateSystem(db);
 
             // Enrich for frontend (duplicated logic from system API to ensure instant reactivity)
             const enrichedDecisions = updatedDB.decisions.map(d => ({

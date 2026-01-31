@@ -13,12 +13,12 @@ export async function POST(request: Request) {
 
         // 1. Record Event
         const newEvent = { name: event, timestamp: Date.now(), value: value || 0 };
-        appendEvent(newEvent);
+        await appendEvent(newEvent);
 
-        // 2. Re-evaluate System synchronously (for MVP simplicity)
-        // In strict production this would be async/background.
-        const db = getDB();
-        const evaluatedDB = evaluateSystem(db);
+        // 2. Re-evaluate System
+        const db = await getDB();
+        const evaluatedDB = await evaluateSystem(db);
+
 
         return NextResponse.json({ success: true, system: evaluatedDB });
     } catch (e) {

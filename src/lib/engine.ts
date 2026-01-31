@@ -1,7 +1,7 @@
 import { DBSchema, saveDB } from './store';
 import { Signal, Decision, SignalStatus, DecisionStatus } from '../types';
 
-export function evaluateSystem(db: DBSchema): DBSchema {
+export async function evaluateSystem(db: DBSchema): Promise<DBSchema> {
     // 1. Evaluate Signals based on Events
     const updatedSignals = db.signals.map(signal => evaluateSignal(signal, db.events));
 
@@ -15,9 +15,10 @@ export function evaluateSystem(db: DBSchema): DBSchema {
         decisions: updatedDecisions
     };
 
-    saveDB(newDB);
+    await saveDB(newDB);
     return newDB;
 }
+
 
 function evaluateSignal(signal: Signal, events: any[]): Signal {
     // Logic: Check if rules are met by recent events.
