@@ -37,9 +37,33 @@ export async function POST(request: Request) {
             saveDB(db);
 
             // Trigger Engine Re-evaluation
-            evaluateSystem(db);
+            const updatedDB = evaluateSystem(db);
 
-            return NextResponse.json({ success: true, result });
+            // Enrich for frontend (duplicated logic from system API to ensure instant reactivity)
+            const enrichedDecisions = updatedDB.decisions.map(d => ({
+                ...d,
+                requiredSignals: updatedDB.signals.filter(s => d.requiredSignalIds.includes(s.id)),
+                affectedFlows: updatedDB.flows.filter(f => d.affectedFlowIds.includes(f.id))
+            }));
+
+            const stats = {
+                blind: enrichedDecisions.filter(d => d.status === 'a_ciegas').length,
+                partial: enrichedDecisions.filter(d => d.status === 'parcial').length,
+                clear: enrichedDecisions.filter(d => d.status === 'clara').length,
+                total: enrichedDecisions.length
+            };
+
+            return NextResponse.json({
+                success: true,
+                result,
+                systemState: {
+                    decisions: enrichedDecisions,
+                    stats,
+                    recentEvents: updatedDB.events.slice(-10),
+                    lastScan: updatedDB.lastScan
+                }
+            });
+
 
         }
 

@@ -29,7 +29,11 @@ export default function Home() {
   const [newDesc, setNewDesc] = useState('');
   const [newCat, setNewCat] = useState('activación');
 
-  const fetchSystem = async () => {
+  const fetchSystem = async (newState?: any) => {
+    if (newState) {
+      setData(newState);
+      return;
+    }
     try {
       const res = await fetch('/api/system');
       const json = await res.json();
@@ -44,6 +48,7 @@ export default function Home() {
   useEffect(() => {
     fetchSystem();
   }, []);
+
 
   const simulateEvent = async (eventName: string, val?: number) => {
     await fetch('/api/track', {

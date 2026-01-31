@@ -4,7 +4,8 @@ import { Search, Loader2, CheckCircle2, AlertTriangle, XCircle, ExternalLink, Sh
 
 
 
-export const ScannerPanel = ({ onScanComplete }: { onScanComplete: () => void }) => {
+export const ScannerPanel = ({ onScanComplete }: { onScanComplete: (state?: any) => void }) => {
+
     const [url, setUrl] = useState('');
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState<any>(null);
@@ -70,9 +71,13 @@ export const ScannerPanel = ({ onScanComplete }: { onScanComplete: () => void })
             // Artificial delay to appreciate the terminal work
             setTimeout(() => {
                 setResult(json.result);
-                onScanComplete();
-                setTimeout(onScanComplete, 800);
+                if (json.systemState) {
+                    onScanComplete(json.systemState);
+                } else {
+                    onScanComplete();
+                }
             }, 1000);
+
 
         } catch (e) {
             addLog("!! FATAL ERROR: CONNECTION_REFUSED");
